@@ -1,39 +1,36 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const session = require('express-session');
+const path = require('path');
 
 const db = new sqlite3.Database('./holeinone.db');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// CORS options for allowing requests from your frontend
-const corsOptions = {
-    origin: [
-        'http://127.0.0.1:5000',
-        'http://localhost:5000',
-        'http://127.0.0.1:5500',
-        'http://localhost:5500'
-    ],
-    methods: ['GET', 'POST', 'DELETE'],
-    allowedHeaders: ['Content-Type'],
-    credentials: true
-};
-app.use(cors(corsOptions));
-
 // Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(express.static(__dirname));
-
-// Session middleware
-app.use(session({
-    secret: 'your_secret_key', // Change this in production
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false } // Set to true if using HTTPS
+app.use(cors({
+    origin: process.env.NODE_ENV === 'production' 
+        ? 'https://holeinoneresort.com' 
+        : 'http://localhost:3000',
+    credentials: true
 }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+    }
+}));
+
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Create 'inquiries' table with 'status' column for inquiries
 db.serialize(() => {

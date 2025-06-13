@@ -131,6 +131,7 @@
             th, td { padding: 8px 4px; font-size: 0.95rem; }
         }
     </style>
+    <script src="config.js"></script>
 </head>
 <body>
     <div class="admin-header">
@@ -193,7 +194,7 @@
             return false;
         }
         // Fetch and display inquiries data
-        fetch('http://localhost:5000/inquiries', {
+        fetch(`${config.apiUrl}/inquiries`, {
             method: 'GET',
             credentials: 'include'
         })
@@ -228,7 +229,7 @@
         // Fetch and display bookings data
         function refreshBookings() {
             document.getElementById('loading').style.display = 'block';
-            fetch('http://localhost:5000/bookings', {
+            fetch(`${config.apiUrl}/bookings`, {
                 method: 'GET',
                 credentials: 'include'
             })
@@ -271,7 +272,7 @@
         }
         // Logout button logic
         document.getElementById('logoutBtn').onclick = function() {
-            fetch('http://localhost:5000/logout', {
+            fetch(`${config.apiUrl}/logout`, {
                 method: 'POST',
                 credentials: 'include'
             }).then(() => {
@@ -285,7 +286,7 @@
         // Add after the inquiries fetch
         function deleteInquiry(id) {
             if (!confirm('Are you sure you want to delete this inquiry?')) return;
-            fetch(`http://localhost:5000/inquiries/${id}`, {
+            fetch(`${config.apiUrl}/inquiries/${id}`, {
                 method: 'DELETE',
                 credentials: 'include'
             })
@@ -298,7 +299,7 @@
         // Add after the bookings fetch
         function deleteBooking(id) {
             if (!confirm('Are you sure you want to delete this booking?')) return;
-            fetch(`http://localhost:5000/bookings/${id}`, {
+            fetch(`${config.apiUrl}/bookings/${id}`, {
                 method: 'DELETE',
                 credentials: 'include'
             })
