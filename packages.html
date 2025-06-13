@@ -1,0 +1,64 @@
+<!-- Packages Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packages</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="custom-packages-bg">
+    <header class="custom-header">
+        <div class="header-content">
+            <a href="index.html"><img src="Logo.png" alt="Resort Logo" class="resort-logo"></a>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Open navigation">&#9776;</button>
+            <nav>
+                <ul class="custom-nav">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="golf-course.html">Golf Course</a></li>
+                    <li><a href="packages.html">Packages</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section class="packages-section">
+        <div class="packages-row">
+            <div class="package-col">
+                <h2 class="package-title left"><span>Five Rounds Package:</span></h2>
+                <p class="package-desc left">Includes five rounds of golf, a five-night stay in a luxury suite, and one guaranteed round on the Sea View course.</p>
+                <div class="package-images">
+                    <img src="Picture 1.png" alt="Golf Course" class="package-img">
+                    <img src="Picture 2.png" alt="Luxury Suite" class="package-img">
+                </div>
+                <div class="package-btn-row">
+                    <a href="booking-form.html" class="package-btn">Book Now</a>
+                </div>
+            </div>
+            <div class="package-col">
+                <h2 class="package-title right"><span>Getaway Break Package:</span></h2>
+                <p class="package-desc right">One-night stay, dinner at the resort restaurant, and access to the courses.</p>
+                <div class="package-images">
+                    <img src="Picture 3.png" alt="Restaurant" class="package-img">
+                    <img src="Picture 4.png" alt="Hotel Room" class="package-img">
+                </div>
+                <div class="package-btn-row">
+                    <a href="booking-form.html" class="package-btn">Book Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <p>&copy; 2025 Hole in One Golf Resort</p>
+    </footer>
+    <script>
+    // Hamburger menu toggle for mobile
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const nav = document.querySelector('.custom-nav');
+    hamburgerBtn.addEventListener('click', () => {
+      nav.classList.toggle('open');
+    });
+    </script>
+</body>
+</html>

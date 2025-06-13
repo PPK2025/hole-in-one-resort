@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Form</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="booking-bg">
+        <header class="custom-header">
+            <div class="header-content">
+                <a href="index.html">
+                    <img src="Logo.png" alt="Resort Logo" class="resort-logo">
+                </a>
+                <button class="hamburger" id="hamburgerBtn" aria-label="Open navigation">&#9776;</button>
+                <nav>
+                    <ul class="custom-nav">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="golf-course.html">Golf Course</a></li>
+                        <li><a href="packages.html">Packages</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <main class="booking-main">
+            <div class="booking-form-box">
+                <h2 class="booking-title">Booking Form:</h2>
+                <form id="bookingForm" class="booking-grid">
+                    <div class="form-col">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                        <label for="address">Address</label>
+                        <input type="text" id="address" name="address" required>
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                        <label for="phoneNumber">Phone Number</label>
+                        <input type="tel" id="phoneNumber" name="phoneNumber" required>
+                    </div>
+                    <div class="form-col">
+                        <div class="row-group">
+                            <div class="row-half">
+                                <label for="fromDate">From Date</label>
+                                <input type="date" id="fromDate" name="fromDate" required>
+                            </div>
+                            <div class="row-half">
+                                <label for="toDate">To Date</label>
+                                <input type="date" id="toDate" name="toDate" required>
+                            </div>
+                        </div>
+                        <label for="coursePackage">Select Course/ Package</label>
+                        <select id="coursePackage" name="coursePackage" class="full-width" required>
+                            <option value="" selected disabled>Select a Course/Package</option>
+                            <option value="Sea View Course">Sea View Course</option>
+                            <option value="Other Course 1">Other Course 1</option>
+                            <option value="Other Course 2">Other Course 2</option>
+                            <option value="Five Rounds Package">Five Rounds Package</option>
+                            <option value="Getaway Break Package">Getaway Break Package</option>
+                        </select>
+                        <label for="guests">Number of Guest</label>
+                        <input type="number" id="guests" name="guests" required min="1" placeholder="Number of Guest">
+                        <label for="paymentInfo">Payment Method</label>
+                        <select id="paymentInfo" name="paymentInfo" class="full-width" required>
+                            <option value="" selected disabled>Select Payment Method</option>
+                            <option value="Walk-in Payment">Walk-in Payment</option>
+                            <option value="Online Payment">Online Payment</option>
+                        </select>
+                        <div class="row-group">
+                            <label for="total" style="flex:1;">Total</label>
+                            <input type="text" id="total" name="total" style="flex:2;" readonly>
+                        </div>
+                    </div>
+                </form>
+                <div class="booking-btn-row">
+                    <button type="submit" form="bookingForm" class="booking-btn">Confirm Booking</button>
+                </div>
+                <div id="booking-confirmation-message" style="display:none; margin-top:40px; text-align:center; font-size:1.3rem; color:#184C3A; background:#fff; border-radius:8px; box-shadow:0 4px 24px rgba(0,0,0,0.10); padding:48px 24px; max-width:480px; margin-left:auto; margin-right:auto;">
+                    Thank You for booking with Hole in One Resort. Your reservation has been confirmed.<br>We will contact you shortly.
+                </div>
+            </div>
+        </main>
+        <footer>
+            <p>&copy; 2025 Hole in One Golf Resort</p>
+        </footer>
+    </div>
+    <script src="scripts.js"></script>
+    <script>
+        // Course and package pricing
+        const coursePrices = {
+            'Sea View Course': 300.00,
+            'Other Course 1': 200.00,
+            'Other Course 2': 100.00,
+            'Five Rounds Package': 800.00,
+            'Getaway Break Package': 500.00
+        };
+
+        function updateTotalAmount() {
+            const selectedCourse = document.getElementById('coursePackage').value;
+            const numberOfGuests = document.getElementById('guests').value;
+            const fromDate = document.getElementById('fromDate').value;
+            const toDate = document.getElementById('toDate').value;
+            const totalField = document.getElementById('total');
+
+            if (!selectedCourse || !fromDate || !toDate || !numberOfGuests) {
+                totalField.value = '';
+                return;
+            }
+
+            const startDate = new Date(fromDate);
+            const endDate = new Date(toDate);
+            const timeDifference = endDate - startDate;
+            const numberOfDays = timeDifference / (1000 * 3600 * 24) + 1;
+            let pricePerGuest = coursePrices[selectedCourse] || 0;
+            let totalAmount = pricePerGuest * numberOfGuests * numberOfDays;
+            totalField.value = `$${totalAmount.toFixed(2)}`;
+        }
+
+        document.getElementById('coursePackage').addEventListener('change', updateTotalAmount);
+        document.getElementById('guests').addEventListener('input', updateTotalAmount);
+        document.getElementById('fromDate').addEventListener('change', updateTotalAmount);
+        document.getElementById('toDate').addEventListener('change', updateTotalAmount);
+        window.onload = updateTotalAmount;
+
+        // Show confirmation message and hide form after booking
+        function showBookingConfirmationMessage() {
+            document.querySelector('.booking-form-box form').style.display = 'none';
+            document.getElementById('booking-confirmation-message').style.display = 'block';
+            document.querySelector('.booking-btn-row').style.display = 'none';
+        }
+
+        // Hamburger menu toggle for mobile
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const nav = document.querySelector('.custom-nav');
+        hamburgerBtn.addEventListener('click', () => {
+            nav.classList.toggle('open');
+        });
+    </script>
+</body>
+</html>

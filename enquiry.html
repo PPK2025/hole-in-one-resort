@@ -1,0 +1,53 @@
+<!-- Enquiry Form Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enquiry</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Open navigation">&#9776;</button>
+            <ul class="custom-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="golf-course.html">Golf Course</a></li>
+                <li><a href="packages.html">Packages</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="enquiry-form">
+        <h2>Enquiry Form</h2>
+        <form id="enquiryForm">
+            <label for="name">Full Name:</label><br>
+            <input type="text" id="name" name="fullName" required><br><br>
+
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <label for="message">Message:</label><br>
+            <textarea id="message" name="message" rows="4" required></textarea><br><br>
+
+            <button type="submit">Send Enquiry</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Hole in One Golf Resort</p>
+    </footer>
+
+    <script>
+    // Hamburger menu toggle for mobile
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const nav = document.querySelector('.custom-nav');
+    hamburgerBtn.addEventListener('click', () => {
+      nav.classList.toggle('open');
+    });
+    </script>
+</body>
+</html>

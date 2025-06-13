@@ -1,0 +1,52 @@
+<!-- About Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="about-bg">
+    <div class="container">
+        <header class="custom-header">
+            <div class="header-content">
+                <a href="index.html"><img src="Logo.png" alt="Resort Logo" class="resort-logo"></a>
+                <button class="hamburger" id="hamburgerBtn" aria-label="Open navigation">&#9776;</button>
+                <nav>
+                    <ul class="custom-nav">
+                        <li><a href="golf-course.html">Golf Course</a></li>
+                        <li><a href="packages.html">Packages</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <main class="about-main about-flex">
+            <div class="about-left">
+                <h2 class="about-title">Discover Hole in One Golf Resort</h2>
+                <p class="about-desc"><em>Located in the stunning coastal region of Portugal, Hole in One Golf Resort offers world-class golfing, luxurious accommodations, and exclusive experiences. Whether you're here for a challenging round of golf, a relaxing getaway, or a special event, we are committed to providing the highest level of service in a breathtaking environment</em></p>
+            </div>
+            <div class="about-right">
+                <div class="about-book-box">
+                    <div class="about-book-title">Join Us at Hole in One Golf Resort</div>
+                    <a href="booking-form.html" class="about-book-btn">Book Now</a>
+                </div>
+            </div>
+        </main>
+        <div class="about-image-row">
+            <img src="About.png" alt="About Resort" class="about-image">
+        </div>
+        <button class="back-home-btn" onclick="window.location.href='index.html'">Back To Home</button>
+    </div>
+    <script>
+    // Hamburger menu toggle for mobile
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const nav = document.querySelector('.custom-nav');
+    hamburgerBtn.addEventListener('click', () => {
+      nav.classList.toggle('open');
+    });
+    </script>
+</body>
+</html>

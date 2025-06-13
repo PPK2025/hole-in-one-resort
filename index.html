@@ -1,0 +1,50 @@
+<!-- index.html (Home Page) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hole in One Golf Resort</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="custom-header">
+        <div class="header-content">
+            <a href="index.html"><img src="Logo.png" alt="Resort Logo" class="resort-logo"></a>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Open navigation">&#9776;</button>
+            <nav>
+                <ul class="custom-nav">
+                    <li><a href="golf-course.html">Golf Course</a></li>
+                    <li><a href="packages.html">Packages</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="custom-hero">
+        <div class="hero-overlay">
+            <div class="welcome-text">
+                <span class="welcome-to">WELCOME TO</span>
+                <h1 class="hero-title">HOLE IN ONE GOLF RESORT</h1>
+                <span class="hero-subtitle">Stay in Paradise, Only in Portugal</span>
+            </div>
+            <a href="booking-form.html" class="custom-book-btn">Book Now</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Hole in One Golf Resort</p>
+    </footer>
+
+    <script>
+    // Hamburger menu toggle for mobile
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const nav = document.querySelector('.custom-nav');
+    hamburgerBtn.addEventListener('click', () => {
+      nav.classList.toggle('open');
+    });
+    </script>
+</body>
+</html>
