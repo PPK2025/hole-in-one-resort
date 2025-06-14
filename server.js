@@ -17,6 +17,8 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
   : [];
 
+console.log('Allowed origins:', allowedOrigins);
+
 // Middleware
 app.use(cors({
   origin: function(origin, callback) {
