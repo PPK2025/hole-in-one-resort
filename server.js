@@ -6,7 +6,7 @@ const cors = require('cors');
 const session = require('express-session');
 const path = require('path');
 const bcrypt = require('bcrypt');
-const RedisStore = require('connect-redis').default;
+const RedisStore = require('connect-redis');
 const { createClient } = require('redis');
 
 const db = new sqlite3.Database('./holeinone.db');
