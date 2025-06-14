@@ -293,6 +293,18 @@ app.post('/change-password', requireAdmin, async (req, res) => {
     });
 });
 
+// TEMPORARY: Route to initialize admin user
+app.get('/init-admin', async (req, res) => {
+  const username = 'admin';
+  const password = await bcrypt.hash('admin123', 10);
+  db.run("INSERT INTO admin_credentials (username, password) VALUES (?, ?)", [username, password], function(err) {
+    if (err) {
+      return res.status(500).send('Error initializing admin: ' + err.message);
+    }
+    res.send('Admin user created!');
+  });
+});
+
 // Health check or root route
 app.get('/', (req, res) => {
     res.send('Backend is running!');
