@@ -7,7 +7,7 @@ const session = require('express-session');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const RedisStore = require('connect-redis')(session);
-const { createClient } = require('redis');
+const redis = require('redis');
 
 const db = new sqlite3.Database('./holeinone.db');
 const app = express();
@@ -34,10 +34,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Create Redis client
-let redisClient = createClient({
-    url: process.env.REDIS_URL
-});
-redisClient.connect().catch(console.error);
+let redisClient = redis.createClient(process.env.REDIS_URL);
+redisClient.on('error', (err) => console.log('Redis Client Error', err));
 
 // Use Redis for session storage
 app.use(session({
