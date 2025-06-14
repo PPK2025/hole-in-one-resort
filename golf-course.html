@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Golf Course</title>
+    <title>Golf Course - Hole in One Resort</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body.golf-bg {
@@ -187,7 +187,11 @@
     <header class="golf-header">
         <div class="golf-header-content">
             <a href="index.html"><img src="Logo.png" alt="Resort Logo" class="golf-logo"></a>
-            <button class="hamburger" id="hamburgerBtn" aria-label="Open navigation">&#9776;</button>
+            <button class="hamburger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <nav>
                 <ul class="golf-nav custom-nav">
                     <li><a href="index.html">Home</a></li>
@@ -200,45 +204,100 @@
         </div>
     </header>
     <main class="golf-content golf-main">
-        <div class="golf-features">
-            <div class="golf-features-title">Our Golf Courses Key Features:</div>
-            <ul>
-                <li>18 holes with varying difficulty levels</li>
-                <li>Spectacular ocean views</li>
-                <li>Challenging course layout ideal for both beginners and advanced players</li>
-                <li>Golf cart availability</li>
-                <li>Rental clubs and caddie services</li>
-            </ul>
-        </div>
-        <div class="golf-courses-title">Our Golf Courses:</div>
-        <div class="golf-courses-row">
-            <div class="golf-course-card">
-                <h3>Sea View Course</h3>
-                <p>The Sea View Course offers breathtaking views of the ocean with a challenging 18-hole setup. This scenic course is designed for golfers of all skill levels, providing a test of accuracy and skill with stunning coastal backdrops. The Sea View Course is perfect for those who want a memorable round of golf surrounded by nature.</p>
-                <a href="booking-form.html" class="golf-btn">Book Tee Time</a>
+        <section class="golf-course-header">
+            <h1>Our Golf Courses</h1>
+            <p>Experience world-class golfing with breathtaking views</p>
+        </section>
+
+        <section class="golf-course-features">
+            <div class="feature-card">
+                <h3>18 Holes</h3>
+                <p>Challenging course layout for all skill levels</p>
             </div>
-            <div class="golf-course-card">
-                <h4>Course 1:</h4>
-                <p>Designed for those seeking a more technical challenge, The Hillside Course offers undulating terrain and strategically placed water hazards.</p>
-                <a href="booking-form.html" class="golf-btn">Book Tee Time</a>
+            <div class="feature-card">
+                <h3>Ocean Views</h3>
+                <p>Spectacular coastal scenery</p>
             </div>
-            <div class="golf-course-card">
-                <h4>Course 2:</h4>
-                <p>The Valley Course features wide fairways and open spaces, perfect for beginners looking to enjoy a relaxed round of golf.</p>
-                <a href="booking-form.html" class="golf-btn">Book Tee Time</a>
+            <div class="feature-card">
+                <h3>Golf Cart</h3>
+                <p>Available for your convenience</p>
             </div>
-        </div>
+            <div class="feature-card">
+                <h3>Rental Services</h3>
+                <p>Clubs and caddie services available</p>
+            </div>
+        </section>
+
+        <section class="course-section">
+            <h2>Sea View Course</h2>
+            <img src="sea-view-course.jpg" alt="Sea View Golf Course" class="course-image">
+            <p class="course-description">
+                The Sea View Course offers breathtaking views of the ocean with a challenging 18-hole setup. 
+                This scenic course is designed for golfers of all skill levels, providing a test of accuracy 
+                and skill with stunning coastal backdrops.
+            </p>
+            <a href="booking-form.html" class="book-button">Book Tee Time</a>
+        </section>
+
+        <section class="course-section">
+            <h2>Hillside Course</h2>
+            <img src="hillside-course.jpg" alt="Hillside Golf Course" class="course-image">
+            <p class="course-description">
+                Designed for those seeking a more technical challenge, The Hillside Course offers undulating 
+                terrain and strategically placed water hazards.
+            </p>
+            <a href="booking-form.html" class="book-button">Book Tee Time</a>
+        </section>
+
+        <section class="course-section">
+            <h2>Valley Course</h2>
+            <img src="valley-course.jpg" alt="Valley Golf Course" class="course-image">
+            <p class="course-description">
+                The Valley Course features wide fairways and open spaces, perfect for beginners looking to 
+                enjoy a relaxed round of golf.
+            </p>
+            <a href="booking-form.html" class="book-button">Book Tee Time</a>
+        </section>
     </main>
     <footer>
         <p>&copy; 2025 Hole in One Golf Resort</p>
     </footer>
     <script>
-    // Hamburger menu toggle for mobile
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const nav = document.querySelector('.custom-nav');
-    hamburgerBtn.addEventListener('click', () => {
-      nav.classList.toggle('open');
-    });
+        // Hamburger menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const nav = document.querySelector('.custom-nav');
+        const body = document.body;
+
+        function closeMenu() {
+            nav.classList.remove('open');
+            hamburger.classList.remove('active');
+            body.classList.remove('menu-open');
+        }
+
+        hamburger.addEventListener('click', () => {
+            nav.classList.toggle('open');
+            hamburger.classList.toggle('active');
+            body.classList.toggle('menu-open');
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.custom-nav a').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        // Close menu when clicking outside
+        nav.addEventListener('click', (e) => {
+            if (e.target === nav) {
+                closeMenu();
+            }
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeMenu();
+            }
+        });
     </script>
 </body>
 </html>

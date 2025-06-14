@@ -986,55 +986,299 @@ body > footer {
 
 /* Hamburger menu styles */
 .hamburger {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 2rem;
-  cursor: pointer;
-  color: #184C3A;
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 1001;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    will-change: transform;
+    outline: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.hamburger span {
+    width: 100%;
+    height: 2px;
+    background-color: #E8D8C3;
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: left center;
+    will-change: transform, opacity;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.hamburger span::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #E8D8C3;
+    border-radius: 2px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.hamburger span:nth-child(1) {
+    width: 50%;
+    margin-left: auto;
+    transition-delay: 0.1s;
+}
+
+.hamburger span:nth-child(2) {
+    transition-delay: 0.2s;
+}
+
+.hamburger span:nth-child(3) {
+    width: 75%;
+    margin-left: auto;
+    transition-delay: 0.3s;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(0px, -2px);
+    width: 100%;
+    transition-delay: 0s;
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition-delay: 0s;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(0px, 2px);
+    width: 100%;
+    transition-delay: 0s;
 }
 
 @media (max-width: 900px) {
-  .hamburger {
-    display: block;
-  }
-  .custom-nav {
-    display: none;
-    flex-direction: column;
-    background: #184C3A;
-    position: absolute;
-    top: 70px;
-    right: 0;
-    width: 70vw;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-    z-index: 1000;
-  }
-  .custom-nav.open {
-    display: flex;
-  }
-  .custom-nav li a {
-    background: none;
-    color: #fff;
-    padding: 18px 24px;
-    border-radius: 0;
-    font-size: 1.3rem;
-    border-bottom: 1px solid #2b5c47;
-    box-shadow: none;
-    text-align: left;
-  }
+    .hamburger {
+        display: flex;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        will-change: transform;
+        outline: none;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+        background: rgba(232, 216, 195, 0.1);
+        border-radius: 50%;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 14px;
+        margin: 10px;
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        width: 44px;
+        height: 44px;
+        justify-content: center;
+        gap: 6px;
+        z-index: 1001;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        -webkit-perspective: 1000;
+        perspective: 1000;
+    }
+
+    .hamburger span {
+        width: 24px;
+        height: 2px;
+        background-color: #E8D8C3;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        margin: 0;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        -webkit-perspective: 1000;
+        perspective: 1000;
+    }
+
+    .hamburger span:nth-child(1) {
+        width: 24px;
+        margin: 0;
+    }
+
+    .hamburger span:nth-child(3) {
+        width: 24px;
+        margin: 0;
+    }
+
+    .hamburger:active {
+        background: rgba(232, 216, 195, 0.2);
+        transform: scale(0.95) translateZ(0);
+        -webkit-transform: scale(0.95) translateZ(0);
+    }
+
+    .hamburger.active span {
+        background-color: #E8D8C3;
+    }
+
+    .hamburger:hover span {
+        background-color: #ffffff;
+    }
+
+    .hamburger:hover {
+        background: rgba(232, 216, 195, 0.2);
+    }
+
+    .hamburger:focus {
+        outline: 2px solid #E8D8C3;
+        outline-offset: 2px;
+    }
+
+    .hamburger:focus:not(:focus-visible) {
+        outline: none;
+    }
+
+    .hamburger:hover span::before {
+        opacity: 0.2;
+    }
+
+    .hamburger:active span::before {
+        opacity: 0.4;
+    }
+
+    .hamburger::after {
+        content: '';
+        position: absolute;
+        top: -4px;
+        left: -4px;
+        right: -4px;
+        bottom: -4px;
+        border-radius: 50%;
+        background: rgba(232, 216, 195, 0.1);
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        -webkit-perspective: 1000;
+        perspective: 1000;
+    }
+
+    .hamburger:hover::after {
+        opacity: 1;
+    }
+
+    .hamburger:active::after {
+        opacity: 0.5;
+    }
+
+    .hamburger::before {
+        content: '';
+        position: absolute;
+        inset: -8px;
+        border-radius: 50%;
+        background: radial-gradient(circle at center, rgba(232, 216, 195, 0.2) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+        z-index: -1;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        -webkit-perspective: 1000;
+        perspective: 1000;
+    }
+
+    .hamburger:hover::before {
+        opacity: 1;
+    }
+
+    .hamburger:active::before {
+        opacity: 0.5;
+        transform: scale(0.95) translateZ(0);
+        -webkit-transform: scale(0.95) translateZ(0);
+    }
+
+    /* Prevent text selection on mobile */
+    .hamburger * {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+
+    /* Optimize touch target size */
+    .hamburger,
+    .hamburger span {
+        touch-action: manipulation;
+    }
+
+    /* Reduce animation complexity on mobile */
+    @media (prefers-reduced-motion: reduce) {
+        .hamburger,
+        .hamburger span,
+        .hamburger::before,
+        .hamburger::after {
+            transition: none;
+        }
+    }
+
+    /* Optimize for low-end devices */
+    @media (max-width: 360px) {
+        .hamburger {
+            padding: 12px;
+            width: 40px;
+            height: 40px;
+        }
+
+        .hamburger span {
+            width: 20px;
+        }
+
+        .hamburger span:nth-child(1),
+        .hamburger span:nth-child(3) {
+            width: 20px;
+        }
+    }
+
+    /* Optimize for high-DPI screens */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+        .hamburger span {
+            height: 1.5px;
+        }
+    }
+
+    /* Optimize for dark mode */
+    @media (prefers-color-scheme: dark) {
+        .hamburger span {
+            background-color: #ffffff;
+        }
+
+        .hamburger:hover span {
+            background-color: #E8D8C3;
+        }
+    }
 }
 
 .about-image-full {
-  width: 100vw;
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 0;
-  object-fit: cover;
+    width: 100vw;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0;
+    object-fit: cover;
 }
 
 /* Center navigation panel for golf-course.html */
@@ -1101,4 +1345,132 @@ body > footer {
     width: 160px;
     margin-left: 12px;
   }
+}
+
+@media (max-width: 900px) {
+    /* Existing hamburger menu styles */
+    .custom-nav,
+    .golf-nav {
+        display: none;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100vw;
+        flex-direction: column;
+        align-items: center;
+        background: rgba(24, 76, 58, 0.98);
+        z-index: 1000;
+        padding: 32px 0 24px 0;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        border-radius: 0 0 18px 18px;
+        transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s cubic-bezier(0.4,0,0.2,1);
+        opacity: 0;
+        pointer-events: none;
+    }
+    .custom-nav.open,
+    .golf-nav.open {
+        display: flex;
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
+    .custom-nav li,
+    .golf-nav li {
+        margin: 18px 0;
+        width: 90vw;
+        max-width: 340px;
+    }
+    .custom-nav li a,
+    .golf-nav li a {
+        width: 100%;
+        text-align: center;
+        font-size: 1.3rem;
+        padding: 18px 0;
+        border-radius: 12px;
+        background: #E8D8C3;
+        color: #184C3A;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin: 0 auto;
+        display: block;
+    }
+    .custom-nav li a:hover,
+    .golf-nav li a:hover {
+        background: #d2c1a6;
+        color: #184C3A;
+    }
+    .hamburger {
+        display: flex !important;
+        position: fixed;
+        top: 18px;
+        right: 18px;
+        z-index: 1100;
+    }
+}
+
+@media (max-width: 480px) {
+    .golf-course-container {
+        padding: 15px;
+    }
+
+    .golf-course-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .feature-card {
+        padding: 15px;
+    }
+
+    .course-section h2 {
+        font-size: 1.6rem;
+    }
+
+    .course-image {
+        height: 200px;
+    }
+
+    .course-description {
+        font-size: 0.95rem;
+    }
+
+    .book-button {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+    }
+}
+
+/* Optimize for high-DPI screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .course-image {
+        image-rendering: -webkit-optimize-contrast;
+    }
+}
+
+/* Optimize for dark mode */
+@media (prefers-color-scheme: dark) {
+    .feature-card {
+        background: rgba(232, 216, 195, 0.05);
+    }
+
+    .golf-course-header h1,
+    .course-section h2 {
+        color: #E8D8C3;
+    }
+
+    .course-description {
+        color: #ccc;
+    }
+
+    .book-button {
+        background-color: #E8D8C3;
+        color: #184C3A;
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .feature-card,
+    .course-image,
+    .book-button {
+        transition: none;
+    }
 }
