@@ -778,28 +778,29 @@ body > footer {
 }
 
 .enquiry-btn {
-    background: #000;
+    background: #e67e22;
     color: #fff;
-    font-size: 1.1rem;
-    font-family: 'Arial Black', Arial, sans-serif;
-    border-radius: 0;
-    padding: 10px 24px;
+    font-size: 1rem;
+    font-family: 'Arial', sans-serif;
+    border-radius: 5px;
+    padding: 7px 18px;
     text-decoration: none;
     font-weight: bold;
     border: none;
     margin-top: 16px;
-    width: auto;
-    min-width: 160px;
+    width: fit-content;
+    min-width: unset;
     max-width: 100%;
     display: block;
     margin-left: auto;
     margin-right: auto;
     transition: background 0.2s, color 0.2s;
     white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .enquiry-btn:hover {
-    background: #222;
+    background: #d35400;
     color: #fff;
 }
 
@@ -1310,10 +1311,10 @@ body > footer {
     vertical-align: top;
   }
   .enquiry-btn {
-    font-size: 1.1rem;
-    padding: 10px 24px;
-    width: auto;
-    min-width: 160px;
+    font-size: 1rem;
+    padding: 7px 18px;
+    width: fit-content;
+    min-width: unset;
     height: auto;
     margin-left: auto;
     margin-right: auto;
