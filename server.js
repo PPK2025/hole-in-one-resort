@@ -6,7 +6,6 @@ const cors = require('cors');
 const session = require('express-session');
 const path = require('path');
 const bcrypt = require('bcrypt');
-const axios = require('axios');
 
 const db = new sqlite3.Database('./holeinone.db');
 const app = express();
