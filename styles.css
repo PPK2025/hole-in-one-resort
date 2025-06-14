@@ -661,16 +661,26 @@ body > footer {
     background: #222;
     color: #fff;
 }
-.about-image-full {
-    margin-top: 0;
-    margin-bottom: 0;
+.about-image-container {
+    position: relative;
     width: 100vw;
     max-width: 100vw;
-    height: auto;
+    aspect-ratio: 21/5;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+.about-image-full {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100%;
     display: block;
     object-fit: cover;
+    object-position: center 30%;
     z-index: 1;
     position: relative;
+    margin: 0;
+    padding: 0;
 }
 .back-home-btn {
     position: absolute;
@@ -685,32 +695,23 @@ body > footer {
     border: none;
     box-shadow: 0 2px 8px rgba(0,0,0,0.10);
     cursor: pointer;
-    z-index: 10;
+    z-index: 2;
     transition: background 0.2s, color 0.2s;
 }
 .back-home-btn:hover {
     background: #226b4e;
     color: #fff;
 }
-@media (max-width: 1100px) {
-    .about-main.about-flex {
-        flex-direction: column;
-        gap: 32px;
-        align-items: flex-start;
-        padding: 0;
+@media (max-width: 900px) {
+    .about-image-container {
+        aspect-ratio: 16/7;
     }
-    .about-left, .about-right {
-        width: 100%;
-        padding: 32px 4vw 0 4vw;
-    }
-    .about-book-box {
-        min-width: 0;
-        width: 90vw;
-        padding: 18px 8px;
+    .about-image-full {
+        object-position: center 40%;
     }
     .back-home-btn {
-        right: 16px;
-        bottom: 16px;
+        right: 12px;
+        bottom: 12px;
         padding: 10px 18px;
         font-size: 1rem;
     }
@@ -727,6 +728,18 @@ body > footer {
         width: 100%;
         min-width: 0;
         padding: 12px 2vw;
+    }
+    .about-image-container {
+        height: 200px;
+    }
+    .about-image-full {
+        height: 200px;
+    }
+    .back-home-btn {
+        right: 12px;
+        bottom: 12px;
+        padding: 10px 18px;
+        font-size: 1rem;
     }
 }
 
