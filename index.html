@@ -11,7 +11,11 @@
     <header class="custom-header">
         <div class="header-content">
             <a href="index.html"><img src="Logo.png" alt="Resort Logo" class="resort-logo"></a>
-            <button class="hamburger" id="hamburgerBtn" aria-label="Open navigation">&#9776;</button>
+            <button class="hamburger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <nav>
                 <ul class="custom-nav">
                     <li><a href="golf-course.html">Golf Course</a></li>
@@ -40,10 +44,39 @@
 
     <script>
     // Hamburger menu toggle for mobile
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const hamburgerBtn = document.querySelector('.hamburger');
     const nav = document.querySelector('.custom-nav');
+    const body = document.body;
+
+    function closeMenu() {
+      nav.classList.remove('open');
+      hamburgerBtn.classList.remove('active');
+      body.classList.remove('menu-open');
+    }
+
     hamburgerBtn.addEventListener('click', () => {
       nav.classList.toggle('open');
+      hamburgerBtn.classList.toggle('active');
+      body.classList.toggle('menu-open');
+    });
+
+    // Close menu when clicking a link
+    document.querySelectorAll('.custom-nav a').forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+
+    // Close menu when clicking the close button
+    nav.addEventListener('click', (e) => {
+      if (e.target === nav) {
+        closeMenu();
+      }
+    });
+
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && nav.classList.contains('open')) {
+        closeMenu();
+      }
     });
     </script>
 </body>
