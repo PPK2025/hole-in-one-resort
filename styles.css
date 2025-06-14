@@ -1222,69 +1222,10 @@ body > footer {
   }
 }
 
-/* --- About Page Scrollable Cards --- */
-.about-scroll-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 10;
-    min-height: 420px;
-    height: 60vh;
-    justify-content: center;
-}
-.about-main.about-flex {
+/* Only show scrollbars for about-main.about-flex when content overflows (e.g., on zoom) */
+@media (max-width: 1200px), (max-height: 600px) {
+  .about-main.about-flex {
+    overflow-x: auto;
     overflow-y: auto;
-    max-height: 48vh;
-    min-height: 320px;
-    width: 100%;
-    background: none;
-    scrollbar-width: thin;
-    scrollbar-color: #3ee0e0 #f4f4f4;
-    border-radius: 24px;
-}
-.scroll-btn {
-    background: #184C3A;
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
-    font-size: 2rem;
-    margin: 8px 0;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-    opacity: 0.85;
-    transition: background 0.2s, opacity 0.2s;
-    z-index: 20;
-}
-.scroll-btn:hover {
-    background: #3ee0e0;
-    color: #184C3A;
-    opacity: 1;
-}
-@media (max-width: 900px) {
-  .about-scroll-wrapper {
-    max-width: 98vw;
-    height: 70vw;
-    min-height: 320px;
-  }
-  .about-main.about-flex {
-    max-height: 50vw;
-    min-height: 220px;
-  }
-}
-@media (max-width: 700px) {
-  .about-scroll-wrapper {
-    max-width: 99vw;
-    height: 80vw;
-    min-height: 180px;
-  }
-  .about-main.about-flex {
-    max-height: 60vw;
-    min-height: 120px;
   }
 }
