@@ -1221,11 +1221,3 @@ body > footer {
     padding: 16px 2vw;
   }
 }
-
-/* Only show scrollbars for about-main.about-flex when content overflows (e.g., on zoom) */
-@media (max-width: 1200px), (max-height: 600px) {
-  .about-main.about-flex {
-    overflow-x: auto;
-    overflow-y: auto;
-  }
-}
