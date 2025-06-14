@@ -5,6 +5,8 @@ const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const session = require('express-session');
 const path = require('path');
+const bcrypt = require('bcrypt');
+const axios = require('axios');
 
 const db = new sqlite3.Database('./holeinone.db');
 const app = express();
@@ -64,15 +66,53 @@ db.serialize(() => {
     `);
 });
 
-// Admin login route
-app.post('/login', (req, res) => {
+// Create admin credentials table
+db.serialize(() => {
+    db.run(`
+        CREATE TABLE IF NOT EXISTS admin_credentials (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE,
+            password TEXT,
+            last_password_change TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
+
+    // Insert default admin if not exists
+    db.get("SELECT * FROM admin_credentials WHERE username = 'admin'", [], async (err, row) => {
+        if (err) {
+            console.error('Error checking admin credentials:', err);
+            return;
+        }
+        if (!row) {
+            const hashedPassword = await bcrypt.hash('admin123', 10);
+            db.run("INSERT INTO admin_credentials (username, password) VALUES (?, ?)", 
+                ['admin', hashedPassword]);
+        }
+    });
+});
+
+// Admin login route without CAPTCHA
+app.post('/login', async (req, res) => {
     const { username, password } = req.body;
-    if (username === 'admin' && password === 'admin123') {
+
+    // Get admin credentials
+    db.get("SELECT * FROM admin_credentials WHERE username = ?", [username], async (err, row) => {
+        if (err) {
+            return res.status(500).json({ message: 'Database error' });
+        }
+        if (!row) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        // Verify password
+        const isValid = await bcrypt.compare(password, row.password);
+        if (!isValid) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
         req.session.isAdmin = true;
         res.status(200).json({ message: 'Login successful' });
-    } else {
-        res.status(401).json({ message: 'Invalid credentials' });
-    }
+    });
 });
 
 // Admin logout route
@@ -89,6 +129,15 @@ function requireAdmin(req, res, next) {
         res.status(403).json({ message: 'Not authorized' });
     }
 }
+
+// Check authentication status
+app.get('/check-auth', (req, res) => {
+    if (req.session.isAdmin) {
+        res.status(200).json({ message: 'Authenticated' });
+    } else {
+        res.status(403).json({ message: 'Not authenticated' });
+    }
+});
 
 // Protected routes
 app.get('/inquiries', requireAdmin, (req, res) => {
@@ -194,6 +243,49 @@ app.delete('/bookings/:id', requireAdmin, (req, res) => {
         }
         res.status(200).json({ message: 'Booking deleted successfully' });
     });
+});
+
+// Change password route
+app.post('/change-password', requireAdmin, async (req, res) => {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+        return res.status(400).json({ message: 'Missing required fields' });
+    }
+
+    if (newPassword.length < 8) {
+        return res.status(400).json({ message: 'New password must be at least 8 characters long' });
+    }
+
+    // Get current admin credentials
+    db.get("SELECT * FROM admin_credentials WHERE username = 'admin'", async (err, row) => {
+        if (err) {
+            return res.status(500).json({ message: 'Database error' });
+        }
+
+        // Verify current password
+        const isValid = await bcrypt.compare(currentPassword, row.password);
+        if (!isValid) {
+            return res.status(401).json({ message: 'Current password is incorrect' });
+        }
+
+        // Hash and save new password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        db.run("UPDATE admin_credentials SET password = ?, last_password_change = CURRENT_TIMESTAMP WHERE username = 'admin'",
+            [hashedPassword],
+            (err) => {
+                if (err) {
+                    return res.status(500).json({ message: 'Error updating password' });
+                }
+                res.status(200).json({ message: 'Password updated successfully' });
+            }
+        );
+    });
+});
+
+// Health check or root route
+app.get('/', (req, res) => {
+    res.send('Backend is running!');
 });
 
 // Start the server
