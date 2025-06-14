@@ -780,18 +780,19 @@ body > footer {
 .enquiry-btn {
     background: #000;
     color: #fff;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-family: 'Arial Black', Arial, sans-serif;
     border-radius: 0;
-    padding: 18px 0;
+    padding: 10px 0;
     text-decoration: none;
     font-weight: bold;
     border: none;
-    margin-top: 18px;
-    width: 220px;
+    margin-top: 16px;
+    width: 140px;
     max-width: 100%;
     display: block;
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
     transition: background 0.2s, color 0.2s;
 }
 
@@ -1307,13 +1308,14 @@ body > footer {
     vertical-align: top;
   }
   .enquiry-btn {
-    display: inline-block;
-    vertical-align: top;
-    margin-left: 12px;
-    margin-top: 0;
-    height: 56px;
-    padding: 0 32px;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    padding: 10px 0;
+    width: 140px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 16px;
+    display: block;
   }
   #enquiryForm {
     flex-direction: column;
