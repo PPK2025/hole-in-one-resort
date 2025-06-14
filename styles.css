@@ -783,17 +783,19 @@ body > footer {
     font-size: 1.1rem;
     font-family: 'Arial Black', Arial, sans-serif;
     border-radius: 0;
-    padding: 10px 0;
+    padding: 10px 24px;
     text-decoration: none;
     font-weight: bold;
     border: none;
     margin-top: 16px;
-    width: 140px;
+    width: auto;
+    min-width: 160px;
     max-width: 100%;
     display: block;
     margin-left: auto;
     margin-right: auto;
     transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
 }
 
 .enquiry-btn:hover {
@@ -1309,13 +1311,15 @@ body > footer {
   }
   .enquiry-btn {
     font-size: 1.1rem;
-    padding: 10px 0;
-    width: 140px;
+    padding: 10px 24px;
+    width: auto;
+    min-width: 160px;
     height: auto;
     margin-left: auto;
     margin-right: auto;
     margin-top: 16px;
     display: block;
+    white-space: nowrap;
   }
   #enquiryForm {
     flex-direction: column;
