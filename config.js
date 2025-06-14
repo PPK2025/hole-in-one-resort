@@ -4,10 +4,21 @@ const config = {
         domain: 'localhost'
     },
     production: {
-        apiUrl: 'https://ppk2025.github.io/hole-in-one-resort', // GitHub Pages URL
-        domain: 'ppk2025.github.io'
+        // Render.com will automatically provide the URL
+        apiUrl: process.env.RENDER_EXTERNAL_URL || 'https://hole-in-one-admin.onrender.com',
+        domain: process.env.RENDER_EXTERNAL_URL ? new URL(process.env.RENDER_EXTERNAL_URL).hostname : 'hole-in-one-admin.onrender.com'
     }
 };
 
+// Determine environment
 const environment = process.env.NODE_ENV || 'development';
-module.exports = config[environment]; 
+const currentConfig = config[environment];
+
+// Export configuration
+if (typeof window !== 'undefined') {
+    // Browser environment
+    window.config = currentConfig;
+} else {
+    // Node.js environment
+    module.exports = currentConfig;
+} 

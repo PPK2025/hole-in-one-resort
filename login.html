@@ -108,28 +108,69 @@
             <input type="text" id="username" name="username" required>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
+            <div id="loginError" style="color: #dc3545; margin-bottom: 15px; display: none;"></div>
             <button type="submit">Login</button>
         </form>
     </div>
+
+    <script src="config.js"></script>
     <script>
-        document.querySelector('form').onsubmit = function(e) {
+        let loginAttempts = 0;
+        const maxAttempts = 5;
+        const lockoutTime = 15 * 60 * 1000; // 15 minutes in milliseconds
+        let lockoutEndTime = 0;
+
+        function showError(message) {
+            const errorDiv = document.getElementById('loginError');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function checkLockout() {
+            if (loginAttempts >= maxAttempts) {
+                const now = Date.now();
+                if (now < lockoutEndTime) {
+                    const minutesLeft = Math.ceil((lockoutEndTime - now) / 60000);
+                    showError(`Too many failed attempts. Please try again in ${minutesLeft} minutes.`);
+                    return true;
+                } else {
+                    // Reset attempts after lockout period
+                    loginAttempts = 0;
+                }
+            }
+            return false;
+        }
+
+        document.querySelector('form').onsubmit = async function(e) {
             e.preventDefault();
+            if (checkLockout()) {
+                return;
+            }
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            fetch('http://localhost:5000/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify({ username, password })
-            })
-            .then(response => {
+            try {
+                const response = await fetch(`${config.apiUrl}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ username, password })
+                });
                 if (response.ok) {
                     window.location.href = 'admin.html';
                 } else {
-                    alert('Login failed');
+                    loginAttempts++;
+                    if (loginAttempts >= maxAttempts) {
+                        lockoutEndTime = Date.now() + lockoutTime;
+                        showError(`Too many failed attempts. Please try again in 15 minutes.`);
+                    } else {
+                        const data = await response.json();
+                        showError(data.message || `Login failed. ${maxAttempts - loginAttempts} attempts remaining.`);
+                    }
                 }
-            })
-            .catch(() => alert('Login failed'));
+            } catch (error) {
+                console.error('Login error:', error);
+                showError('Unable to connect to the server. Please try again later.');
+            }
         };
     </script>
 </body>

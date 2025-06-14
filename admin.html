@@ -130,6 +130,21 @@
             .card { padding: 16px 4vw; }
             th, td { padding: 8px 4px; font-size: 0.95rem; }
         }
+        .change-password-btn {
+            background: #fff;
+            color: #184C3A;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: background 0.2s, color 0.2s;
+        }
+        .change-password-btn:hover {
+            background: #e8d8c3;
+        }
     </style>
     <script src="config.js"></script>
 </head>
@@ -137,8 +152,37 @@
     <div class="admin-header">
         <img src="Logo.png" alt="Resort Logo" class="logo">
         <span class="company-name">Hole in One Resort Management System</span>
-        <button class="logout-btn" id="logoutBtn">Logout</button>
+        <div style="margin-left: auto; display: flex; gap: 10px; margin-right: 36px;">
+            <button class="change-password-btn" id="changePasswordBtn">Change Password</button>
+            <button class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
     </div>
+
+    <!-- Password Change Modal -->
+    <div id="passwordModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
+        <div style="position: relative; background: white; width: 400px; margin: 100px auto; padding: 30px; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.15);">
+            <h3 style="color: #184C3A; margin-bottom: 20px;">Change Password</h3>
+            <form id="passwordChangeForm">
+                <div style="margin-bottom: 15px;">
+                    <label for="currentPassword" style="display: block; margin-bottom: 5px; color: #184C3A;">Current Password</label>
+                    <input type="password" id="currentPassword" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="newPassword" style="display: block; margin-bottom: 5px; color: #184C3A;">New Password</label>
+                    <input type="password" id="newPassword" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label for="confirmPassword" style="display: block; margin-bottom: 5px; color: #184C3A;">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="button" class="cancel-btn" id="cancelPasswordChange" style="padding: 8px 20px; background: #e0e0e0; border: none; border-radius: 6px; cursor: pointer;">Cancel</button>
+                    <button type="submit" class="save-btn" style="padding: 8px 20px; background: #184C3A; color: white; border: none; border-radius: 6px; cursor: pointer;">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="container">
         <div class="card">
             <h2>Admin Dashboard</h2>
@@ -185,74 +229,117 @@
         </div>
     </div>
     <script>
-        // Redirect to login if not authorized
-        function handleAuthError(response) {
-            if (response.status === 403) {
-                window.location.href = 'login.html';
-                return true;
-            }
-            return false;
-        }
-        // Fetch and display inquiries data
-        fetch(`${config.apiUrl}/inquiries`, {
-            method: 'GET',
-            credentials: 'include'
-        })
-        .then(response => {
-            if (handleAuthError(response)) return Promise.reject();
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const inquiriesTable = document.getElementById('inquiriesTable').getElementsByTagName('tbody')[0];
-            if (data && data.inquiries) {
-                data.inquiries.forEach(inquiry => {
-                    const row = inquiriesTable.insertRow();
-                    row.innerHTML = ` 
-                        <td>${inquiry.name}</td>
-                        <td>${inquiry.email}</td>
-                        <td>${inquiry.message}</td>
-                        <td>${inquiry.status}</td>
-                        <td>${inquiry.date}</td>
-                        <td><button class="delete-btn" onclick="deleteInquiry(${inquiry.id})">Delete</button></td>
-                    `;
+        // Check authentication status
+        async function checkAuth() {
+            try {
+                const response = await fetch(`${config.apiUrl}/check-auth`, {
+                    method: 'GET',
+                    credentials: 'include'
                 });
-            } else {
-                console.error('Invalid data format received:', data);
-            }
-        })
-        .catch(error => {
-            if (error) console.error('Error fetching inquiries:', error);
-        });
-        // Fetch and display bookings data
-        function refreshBookings() {
-            document.getElementById('loading').style.display = 'block';
-            fetch(`${config.apiUrl}/bookings`, {
-                method: 'GET',
-                credentials: 'include'
-            })
-            .then(response => {
-                if (handleAuthError(response)) return Promise.reject();
+                
                 if (!response.ok) {
+                    window.location.href = 'login.html';
+                    return false;
+                }
+                return true;
+            } catch (error) {
+                console.error('Auth check error:', error);
+                window.location.href = 'login.html';
+                return false;
+            }
+        }
+
+        // Handle logout
+        document.getElementById('logoutBtn').addEventListener('click', async function() {
+            try {
+                const response = await fetch(`${config.apiUrl}/logout`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    window.location.href = 'login.html';
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+                alert('Error during logout. Please try again.');
+            }
+        });
+
+        // Fetch and display inquiries data
+        async function fetchInquiries() {
+            if (!await checkAuth()) return;
+
+            try {
+                const response = await fetch(`${config.apiUrl}/inquiries`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+
+                if (!response.ok) {
+                    if (response.status === 403) {
+                        window.location.href = 'login.html';
+                        return;
+                    }
                     throw new Error('Network response was not ok');
                 }
-                return response.json();
-            })
-            .then(data => {
+
+                const data = await response.json();
+                const inquiriesTable = document.getElementById('inquiriesTable').getElementsByTagName('tbody')[0];
+                inquiriesTable.innerHTML = ''; // Clear existing rows
+
+                if (data && data.inquiries) {
+                    data.inquiries.forEach(inquiry => {
+                        const row = inquiriesTable.insertRow();
+                        row.innerHTML = ` 
+                            <td>${inquiry.name}</td>
+                            <td>${inquiry.email}</td>
+                            <td>${inquiry.message}</td>
+                            <td>${inquiry.status}</td>
+                            <td>${new Date(inquiry.date).toLocaleString()}</td>
+                            <td><button class="delete-btn" onclick="deleteInquiry(${inquiry.id})">Delete</button></td>
+                        `;
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching inquiries:', error);
+                alert('Error loading inquiries. Please refresh the page.');
+            }
+        }
+
+        // Fetch and display bookings data
+        async function fetchBookings() {
+            if (!await checkAuth()) return;
+
+            document.getElementById('loading').style.display = 'block';
+            try {
+                const response = await fetch(`${config.apiUrl}/bookings`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+
+                if (!response.ok) {
+                    if (response.status === 403) {
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
                 const bookingsTable = document.getElementById('bookingsTable').getElementsByTagName('tbody')[0];
-                bookingsTable.innerHTML = '';
+                bookingsTable.innerHTML = ''; // Clear existing rows
+
                 if (data && data.bookings) {
                     data.bookings.forEach(booking => {
                         const row = bookingsTable.insertRow();
                         row.innerHTML = `
                             <td>${booking.fullName}</td>
                             <td>${booking.coursePackage}</td>
-                            <td>${booking.fromDate}</td>
-                            <td>${booking.toDate}</td>
+                            <td>${new Date(booking.fromDate).toLocaleDateString()}</td>
+                            <td>${new Date(booking.toDate).toLocaleDateString()}</td>
                             <td>${booking.guests}</td>
-                            <td>${booking.totalAmount}</td>
+                            <td>$${booking.totalAmount}</td>
                             <td>${booking.paymentInfo}</td>
                             <td>${booking.email}</td>
                             <td>${booking.phoneNumber}</td>
@@ -260,55 +347,136 @@
                             <td><button class="delete-btn" onclick="deleteBooking(${booking.id})">Delete</button></td>
                         `;
                     });
-                } else {
-                    console.error('Invalid data format received:', data);
                 }
+            } catch (error) {
+                console.error('Error fetching bookings:', error);
+                alert('Error loading bookings. Please refresh the page.');
+            } finally {
                 document.getElementById('loading').style.display = 'none';
-            })
-            .catch(error => {
-                if (error) console.error('Error fetching bookings:', error);
-                document.getElementById('loading').style.display = 'none';
-            });
+            }
         }
-        // Logout button logic
-        document.getElementById('logoutBtn').onclick = function() {
-            fetch(`${config.apiUrl}/logout`, {
-                method: 'POST',
-                credentials: 'include'
-            }).then(() => {
-                window.location.href = 'login.html';
-            });
-        };
-        // Refresh the bookings table every 5 seconds
-        setInterval(refreshBookings, 5000);
-        // Initially load the bookings data
-        refreshBookings();
-        // Add after the inquiries fetch
-        function deleteInquiry(id) {
+
+        // Delete inquiry
+        async function deleteInquiry(id) {
+            if (!await checkAuth()) return;
+            
             if (!confirm('Are you sure you want to delete this inquiry?')) return;
-            fetch(`${config.apiUrl}/inquiries/${id}`, {
-                method: 'DELETE',
-                credentials: 'include'
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Failed to delete inquiry');
-                window.location.reload();
-            })
-            .catch(error => alert('Error deleting inquiry: ' + error));
+
+            try {
+                const response = await fetch(`${config.apiUrl}/inquiries/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+
+                if (response.ok) {
+                    fetchInquiries(); // Refresh the inquiries list
+                } else {
+                    throw new Error('Failed to delete inquiry');
+                }
+            } catch (error) {
+                console.error('Error deleting inquiry:', error);
+                alert('Error deleting inquiry. Please try again.');
+            }
         }
-        // Add after the bookings fetch
-        function deleteBooking(id) {
+
+        // Delete booking
+        async function deleteBooking(id) {
+            if (!await checkAuth()) return;
+            
             if (!confirm('Are you sure you want to delete this booking?')) return;
-            fetch(`${config.apiUrl}/bookings/${id}`, {
-                method: 'DELETE',
-                credentials: 'include'
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Failed to delete booking');
-                window.location.reload();
-            })
-            .catch(error => alert('Error deleting booking: ' + error));
+
+            try {
+                const response = await fetch(`${config.apiUrl}/bookings/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+
+                if (response.ok) {
+                    fetchBookings(); // Refresh the bookings list
+                } else {
+                    throw new Error('Failed to delete booking');
+                }
+            } catch (error) {
+                console.error('Error deleting booking:', error);
+                alert('Error deleting booking. Please try again.');
+            }
         }
+
+        // Initial load
+        window.onload = async function() {
+            if (await checkAuth()) {
+                fetchInquiries();
+                fetchBookings();
+            }
+        };
+
+        // Refresh data every 30 seconds
+        setInterval(() => {
+            fetchInquiries();
+            fetchBookings();
+        }, 30000);
+
+        // Password change functionality
+        const passwordModal = document.getElementById('passwordModal');
+        const changePasswordBtn = document.getElementById('changePasswordBtn');
+        const cancelPasswordChange = document.getElementById('cancelPasswordChange');
+        const passwordChangeForm = document.getElementById('passwordChangeForm');
+
+        changePasswordBtn.addEventListener('click', () => {
+            passwordModal.style.display = 'block';
+        });
+
+        cancelPasswordChange.addEventListener('click', () => {
+            passwordModal.style.display = 'none';
+            passwordChangeForm.reset();
+        });
+
+        passwordChangeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                alert('New passwords do not match!');
+                return;
+            }
+
+            if (newPassword.length < 8) {
+                alert('New password must be at least 8 characters long!');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${config.apiUrl}/change-password`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ currentPassword, newPassword })
+                });
+
+                if (response.ok) {
+                    alert('Password changed successfully!');
+                    passwordModal.style.display = 'none';
+                    passwordChangeForm.reset();
+                } else {
+                    const data = await response.json();
+                    alert(data.message || 'Failed to change password');
+                }
+            } catch (error) {
+                console.error('Error changing password:', error);
+                alert('Error changing password. Please try again.');
+            }
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === passwordModal) {
+                passwordModal.style.display = 'none';
+                passwordChangeForm.reset();
+            }
+        });
     </script>
 </body>
 </html>
