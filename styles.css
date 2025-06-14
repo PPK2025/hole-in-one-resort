@@ -682,38 +682,12 @@ body > footer {
     margin: 0;
     padding: 0;
 }
-.back-home-btn {
-    position: absolute;
-    bottom: 32px;
-    right: 48px;
-    background: #184C3A;
-    color: #F3E8DD;
-    font-size: 1.4rem;
-    font-family: 'Arial', sans-serif;
-    border-radius: 8px;
-    padding: 16px 48px;
-    border: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-    cursor: pointer;
-    z-index: 2;
-    transition: background 0.2s, color 0.2s;
-}
-.back-home-btn:hover {
-    background: #226b4e;
-    color: #fff;
-}
 @media (max-width: 900px) {
     .about-image-container {
         aspect-ratio: 16/7;
     }
     .about-image-full {
         object-position: center 40%;
-    }
-    .back-home-btn {
-        right: 12px;
-        bottom: 12px;
-        padding: 10px 18px;
-        font-size: 1rem;
     }
 }
 @media (max-width: 700px) {
@@ -734,12 +708,6 @@ body > footer {
     }
     .about-image-full {
         height: 200px;
-    }
-    .back-home-btn {
-        right: 12px;
-        bottom: 12px;
-        padding: 10px 18px;
-        font-size: 1rem;
     }
 }
 
