@@ -8,22 +8,22 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="about-bg">
-    <div class="container">
-        <header class="custom-header">
-            <div class="header-content">
-                <a href="index.html"><img src="Logo.png" alt="Resort Logo" class="resort-logo"></a>
-                <button class="hamburger" id="hamburgerBtn" aria-label="Open navigation">&#9776;</button>
-                <nav>
-                    <ul class="custom-nav">
-                        <li><a href="golf-course.html">Golf Course</a></li>
-                        <li><a href="packages.html">Packages</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </header>
-        <main class="about-main about-flex">
+    <header class="custom-header">
+        <div class="header-content">
+            <a href="index.html"><img src="Logo.png" alt="Resort Logo" class="resort-logo"></a>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Open navigation">&#9776;</button>
+            <nav>
+                <ul class="custom-nav">
+                    <li><a href="golf-course.html">Golf Course</a></li>
+                    <li><a href="packages.html">Packages</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section class="about-main about-flex">
             <div class="about-left">
                 <h2 class="about-title">Discover Hole in One Golf Resort</h2>
                 <p class="about-desc"><em>Located in the stunning coastal region of Portugal, Hole in One Golf Resort offers world-class golfing, luxurious accommodations, and exclusive experiences. Whether you're here for a challenging round of golf, a relaxing getaway, or a special event, we are committed to providing the highest level of service in a breathtaking environment</em></p>
@@ -34,10 +34,10 @@
                     <a href="booking-form.html" class="about-book-btn">Book Now</a>
                 </div>
             </div>
-        </main>
+        </section>
         <img src="About.png" alt="About Resort" class="about-image-full" style="z-index:1; position:relative; margin-top:0;">
         <button class="back-home-btn" onclick="window.location.href='index.html'">Back To Home</button>
-    </div>
+    </main>
     <script>
     // Hamburger menu toggle for mobile
     const hamburgerBtn = document.getElementById('hamburgerBtn');
