@@ -129,6 +129,7 @@ app.post('/login', async (req, res) => {
         }
 
         req.session.isAdmin = true;
+        console.log('Session after login:', req.session);
         res.status(200).json({ message: 'Login successful' });
     });
 });
