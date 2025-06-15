@@ -165,15 +165,15 @@
             <form id="passwordChangeForm">
                 <div style="margin-bottom: 15px;">
                     <label for="currentPassword" style="display: block; margin-bottom: 5px; color: #184C3A;">Current Password</label>
-                    <input type="password" id="currentPassword" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
+                    <input type="password" id="currentPassword" name="currentPassword" required autocomplete="current-password" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label for="newPassword" style="display: block; margin-bottom: 5px; color: #184C3A;">New Password</label>
-                    <input type="password" id="newPassword" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
+                    <input type="password" id="newPassword" name="newPassword" required autocomplete="new-password" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
                 </div>
                 <div style="margin-bottom: 20px;">
                     <label for="confirmPassword" style="display: block; margin-bottom: 5px; color: #184C3A;">Confirm New Password</label>
-                    <input type="password" id="confirmPassword" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
+                    <input type="password" id="confirmPassword" name="confirmPassword" required autocomplete="new-password" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
                 </div>
                 <div style="display: flex; gap: 10px; justify-content: flex-end;">
                     <button type="button" class="cancel-btn" id="cancelPasswordChange" style="padding: 8px 20px; background: #e0e0e0; border: none; border-radius: 6px; cursor: pointer;">Cancel</button>
