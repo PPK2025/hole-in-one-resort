@@ -28,7 +28,7 @@
         <main class="booking-main">
             <div class="booking-form-box">
                 <h2 class="booking-title">Booking Form:</h2>
-                <form id="bookingForm" class="booking-grid">
+                <form id="bookingForm" action="https://formspree.io/f/mjkrrwar" method="POST" class="booking-grid">
                     <div class="form-col">
                         <label for="fullName">Full Name</label>
                         <input type="text" id="fullName" name="fullName" required>
@@ -76,23 +76,9 @@
                         </div>
                     </div>
                 </form>
-                <div id="booking-confirmation-message" style="display:none; margin-top:40px; text-align:center; font-size:1.3rem; color:#184C3A; background:#fff; border-radius:12px; box-shadow:0 4px 24px rgba(0,0,0,0.10); padding:48px 24px; max-width:600px; margin-left:auto; margin-right:auto;">
-                    <div style="margin-bottom:30px;">
-                        <img src="Logo.png" alt="Resort Logo" style="height:80px; margin-bottom:20px;">
-                        <h3 style="color:#184C3A; margin-bottom:20px; font-size:2rem;">Booking Confirmed!</h3>
-                        <p style="font-size:1.2rem; margin-bottom:15px;">Thank you for choosing Hole in One Resort.</p>
-                        <p style="font-size:1.1rem; color:#666;">Your reservation has been confirmed and we will contact you shortly.</p>
-                    </div>
-                    <div style="background:#f8f9fa; border-radius:8px; padding:24px; margin:20px 0;">
-                        <h4 style="color:#184C3A; margin-bottom:20px; font-size:1.4rem;">Booking Details</h4>
-                        <div id="booking-details" style="text-align:left; margin:0 auto; max-width:400px; font-size:1.1rem;">
-                            <!-- Booking details will be inserted here -->
-                        </div>
-                    </div>
-                    <div style="margin-top:30px; font-size:1.1rem; color:#666;">
-                        <p>If you have any questions, please contact us at:</p>
-                        <p style="color:#184C3A; font-weight:bold;">support@holeinoneresort.com</p>
-                    </div>
+                <div id="booking-thankyou" style="display:none; margin-top:40px; text-align:center; font-size:1.3rem; color:#184C3A; background:#fff; border-radius:12px; box-shadow:0 4px 24px rgba(0,0,0,0.10); padding:48px 24px; max-width:600px; margin-left:auto; margin-right:auto;">
+                    <h3>Thank you! Your booking has been submitted.</h3>
+                    <p>We will contact you shortly.</p>
                 </div>
             </div>
         </main>
@@ -137,56 +123,6 @@
         document.getElementById('fromDate').addEventListener('change', updateTotalAmount);
         document.getElementById('toDate').addEventListener('change', updateTotalAmount);
         window.onload = updateTotalAmount;
-
-        // Handle form submission
-        document.getElementById('bookingForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const bookingData = Object.fromEntries(formData.entries());
-            
-            try {
-                const response = await fetch('/book', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(bookingData)
-                });
-
-                if (response.ok) {
-                    const result = await response.json();
-                    
-                    // Show confirmation message with booking details
-                    document.querySelector('.booking-form-box form').style.display = 'none';
-                    const confirmationMessage = document.getElementById('booking-confirmation-message');
-                    confirmationMessage.style.display = 'block';
-                    
-                    // Display booking details
-                    const detailsDiv = document.getElementById('booking-details');
-                    detailsDiv.innerHTML = `
-                        <div style="margin-bottom:15px;">
-                            <p style="margin:8px 0;"><strong style="color:#184C3A;">Name:</strong> ${bookingData.fullName}</p>
-                            <p style="margin:8px 0;"><strong style="color:#184C3A;">Course/Package:</strong> ${bookingData.coursePackage}</p>
-                            <p style="margin:8px 0;"><strong style="color:#184C3A;">From:</strong> ${new Date(bookingData.fromDate).toLocaleDateString()}</p>
-                            <p style="margin:8px 0;"><strong style="color:#184C3A;">To:</strong> ${new Date(bookingData.toDate).toLocaleDateString()}</p>
-                            <p style="margin:8px 0;"><strong style="color:#184C3A;">Guests:</strong> ${bookingData.guests}</p>
-                            <p style="margin:8px 0;"><strong style="color:#184C3A;">Payment Method:</strong> ${bookingData.paymentInfo}</p>
-                            <p style="margin:8px 0;"><strong style="color:#184C3A;">Total Amount:</strong> ${result.totalAmount}</p>
-                        </div>
-                    `;
-                    
-                    // Clear form
-                    this.reset();
-                    document.getElementById('total').value = '';
-                } else {
-                    alert('There was an error submitting your booking. Please try again.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('There was an error submitting your booking. Please try again.');
-            }
-        });
 
         // Hamburger menu toggle for mobile
         const hamburgerBtn = document.getElementById('hamburgerBtn');
