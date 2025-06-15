@@ -173,6 +173,22 @@
                 showError('Unable to connect to the server. Please try again later.');
             }
         };
+
+        // Auto-redirect to admin dashboard if already authenticated
+        async function checkAlreadyLoggedIn() {
+            try {
+                const response = await fetch(`${config.apiUrl}/check-auth`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                if (response.ok) {
+                    window.location.href = 'admin.html';
+                }
+            } catch (e) {
+                // Ignore errors, show login form
+            }
+        }
+        checkAlreadyLoggedIn();
     </script>
 </body>
 </html>
