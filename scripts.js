@@ -13,7 +13,7 @@ if (enquiryForm) {
         };
 
         // Send data to the server as JSON
-        fetch('http://localhost:5000/inquiry', {
+        fetch(`${config.apiUrl}/inquiry`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -38,7 +38,7 @@ if (bookingForm) {
         formData.forEach((value, key) => { data[key] = value; });
 
         // Send data to the server as JSON
-        fetch('http://localhost:5000/book', {
+        fetch(`${config.apiUrl}/book`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
