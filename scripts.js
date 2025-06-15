@@ -18,12 +18,31 @@ if (enquiryForm) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         })
-        .then(response => response.text())
-        .then(data => {
-            showEnquiryNotification();
+        .then(response => response.json())
+        .then(result => {
+            // Show confirmation message with enquiry details
+            enquiryForm.style.display = 'none';
+            const confirmationMessage = document.getElementById('enquiry-confirmation-message');
+            confirmationMessage.style.display = 'block';
+            
+            // Display enquiry details
+            const detailsDiv = document.getElementById('enquiry-details');
+            detailsDiv.innerHTML = `
+                <div style="margin-bottom:15px;">
+                    <p style="margin:8px 0;"><strong style="color:#184C3A;">Name:</strong> ${data.fullName}</p>
+                    <p style="margin:8px 0;"><strong style="color:#184C3A;">Email:</strong> ${data.email}</p>
+                    <p style="margin:8px 0;"><strong style="color:#184C3A;">Message:</strong></p>
+                    <p style="margin:8px 0; padding:12px; background:#fff; border-radius:6px; border:1px solid #e0e0e0;">${data.message}</p>
+                </div>
+            `;
+            
+            // Clear form
             enquiryForm.reset();
         })
-        .catch(error => console.error('Error:', error)); // Handle any errors
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error submitting your enquiry. Please try again.');
+        });
     });
 }
 
