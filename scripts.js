@@ -1,3 +1,6 @@
+// Add config for API base URL
+const config = { apiUrl: "https://hole-in-one-resort-admin.onrender.com" };
+
 // Enquiry Form Submission (send message to server)
 const enquiryForm = document.getElementById('enquiryForm');
 if (enquiryForm) {
